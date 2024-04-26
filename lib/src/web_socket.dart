@@ -148,10 +148,12 @@ class WebSocket {
   /// enables you to disconnect and connect again without making a new instance
   Future<void> disconnect() async {
     if (_connectionController.state is Disconnected) return;
-    _isClosedByClient = true;
     _connectionController.add(const Disconnecting());
-    if (_channel != null) await _channel!.sink.close();
-    _connectionController.add(const Disconnected());
+    try {
+      if (_channel != null) await _channel!.sink.close();
+    } finally {
+      _connectionController.add(const Disconnected());
+    }
   }
 
   /// Closes the connection and frees any resources.
