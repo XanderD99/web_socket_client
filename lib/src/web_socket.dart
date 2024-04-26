@@ -100,6 +100,7 @@ class WebSocket {
         binaryType: _binaryType,
       ).timeout(_timeout);
 
+      _isClosedByClient = false;
       _connectionController.add(const Connected());
 
       _channel = getWebSocketChannel(ws);
